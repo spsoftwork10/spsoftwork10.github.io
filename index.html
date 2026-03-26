@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shubham Pore — Linux & Cloud Infrastructure Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --surface: #111318;
+      --surface2: #181b22;
+      --border: rgba(255,255,255,0.07);
+      --accent: #e8c97a;
+      --accent2: #5cb8ff;
+      --accent3: #7cffa4;
+      --text: #e8e8e8;
+      --muted: #7a7f8e;
+      --red: #ff6b6b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: rgba(10,12,16,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+    }
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a {
+      font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
+      font-family: 'DM Mono', monospace;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 3rem 4rem;
+      gap: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(232,201,122,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-left { animation: fadeUp 0.9s ease both; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--accent3); margin-bottom: 1.5rem;
+    }
+    .hero-tag::before {
+      content: ''; display: block;
+      width: 28px; height: 1px; background: var(--accent3);
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 900; line-height: 1.0;
+      color: #fff; margin-bottom: 0.2rem;
+    }
+    h1 span { color: var(--accent); }
+    .hero-role {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.9rem; color: var(--muted);
+      letter-spacing: 0.05em; margin-bottom: 1.5rem;
+    }
+    .hero-desc {
+      font-size: 1.05rem; color: #b0b5c0;
+      max-width: 480px; line-height: 1.8; margin-bottom: 2.5rem;
+    }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.8rem; border-radius: 4px;
+      font-family: 'DM Mono', monospace; font-size: 0.78rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none; font-weight: 500;
+      transition: all 0.25s; cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: var(--accent); color: #0a0c10;
+    }
+    .btn-primary:hover { background: #f5d98a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,201,122,0.25); }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* Hero right — avatar */
+    .hero-right {
+      display: flex; justify-content: center; align-items: center;
+      animation: fadeUp 0.9s 0.2s ease both;
+      position: relative;
+    }
+    .avatar-wrap {
+      position: relative; width: 320px; height: 320px;
+    }
+    .avatar-ring {
+      position: absolute; inset: -12px;
+      border-radius: 50%;
+      border: 1px dashed rgba(232,201,122,0.35);
+      animation: spin 18s linear infinite;
+    }
+    .avatar-ring-2 {
+      position: absolute; inset: -28px;
+      border-radius: 50%;
+      border: 1px solid rgba(92,184,255,0.15);
+      animation: spin 30s linear infinite reverse;
+    }
+    .avatar-img {
+      width: 320px; height: 320px; border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(232,201,122,0.4);
+      background: var(--surface2);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem; color: var(--accent);
+      overflow: hidden;
+    }
+    .avatar-img img { width: 100%; height: 100%; object-fit: cover; }
+    /* Badge */
+    .badge {
+      position: absolute; bottom: 10px; right: -20px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 40px; padding: 0.5rem 1.1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: 'DM Mono', monospace; font-size: 0.7rem;
+      color: var(--accent3); white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent3); animation: pulse 2s ease infinite; }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: center; gap: 0;
+    }
+    .stat {
+      flex: 1; max-width: 220px;
+      padding: 2rem 1.5rem; text-align: center;
+      border-right: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .stat:last-child { border-right: none; }
+    .stat:hover { background: var(--surface2); }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem; font-weight: 700; color: var(--accent);
+    }
+    .stat-label {
+      font-family: 'DM Mono', monospace; font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 3rem; max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      display: flex; align-items: center; gap: 1rem;
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.8rem;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to right, rgba(232,201,122,0.4), transparent);
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700; color: #fff; margin-bottom: 3rem;
+    }
+    h2 em { font-style: italic; color: var(--accent); }
+
+    /* ── EXPERIENCE ── */
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 8px; bottom: 0;
+      width: 1px; background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+    .timeline-item {
+      position: relative; margin-bottom: 3.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .timeline-item:hover { border-color: rgba(232,201,122,0.3); transform: translateX(4px); }
+    .timeline-dot {
+      position: absolute; left: -2.5rem; top: 1.8rem;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent); border: 2px solid var(--bg);
+      box-shadow: 0 0 0 3px rgba(232,201,122,0.2);
+    }
+    .tl-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .tl-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: #fff; }
+    .tl-company { color: var(--accent2); font-family: 'DM Mono', monospace; font-size: 0.82rem; margin-bottom: 0.2rem; }
+    .tl-date {
+      font-family: 'DM Mono', monospace; font-size: 0.7rem;
+      color: var(--muted); background: var(--surface2);
+      padding: 0.25rem 0.7rem; border-radius: 20px; border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .tl-bullets { list-style: none; margin-top: 1rem; }
+    .tl-bullets li {
+      position: relative; padding-left: 1.2rem; margin-bottom: 0.55rem;
+      font-size: 0.9rem; color: #9ea5b4; line-height: 1.7;
+    }
+    .tl-bullets li::before {
+      content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 0.7rem; top: 0.25rem;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    .skill-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .skill-card:hover { border-color: rgba(92,184,255,0.35); transform: translateY(-3px); }
+    .skill-card-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+    .skill-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+    }
+    .skill-card-title { font-family: 'DM Mono', monospace; font-size: 0.78rem; letter-spacing: 0.08em; color: var(--accent2); text-transform: uppercase; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      font-family: 'DM Mono', monospace; font-size: 0.68rem;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--muted); border-radius: 3px; padding: 0.2rem 0.6rem;
+      transition: all 0.15s;
+    }
+    .tag:hover { background: rgba(232,201,122,0.1); border-color: var(--accent); color: var(--accent); }
+
+    /* ── CERTIFICATIONS ── */
+    .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.2rem; }
+    .cert-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.4rem 1.2rem;
+      text-align: center; transition: all 0.2s;
+    }
+    .cert-card:hover { border-color: rgba(124,255,164,0.3); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.3); }
+    .cert-logo { font-size: 2rem; margin-bottom: 0.8rem; }
+    .cert-name { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--text); line-height: 1.5; margin-bottom: 0.4rem; }
+    .cert-issuer { font-size: 0.7rem; color: var(--muted); }
+
+    /* ── ACHIEVEMENTS ── */
+    .achieve-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .achieve-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.8rem;
+      border-left: 3px solid var(--accent);
+      transition: transform 0.2s;
+    }
+    .achieve-card:hover { transform: translateY(-3px); }
+    .achieve-card p { font-size: 0.92rem; color: #9ea5b4; line-height: 1.75; }
+
+    /* ── EDUCATION ── */
+    .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .edu-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 2rem;
+      transition: border-color 0.2s;
+    }
+    .edu-card:hover { border-color: rgba(232,201,122,0.3); }
+    .edu-degree { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+    .edu-school { color: var(--accent2); font-family: 'DM Mono', monospace; font-size: 0.8rem; margin-bottom: 0.3rem; }
+    .edu-year { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    #contact { text-align: center; }
+    .contact-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-top: 2rem; }
+    .contact-link {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.9rem 2rem; border-radius: 4px;
+      border: 1px solid var(--border);
+      font-family: 'DM Mono', monospace; font-size: 0.78rem;
+      letter-spacing: 0.08em; color: var(--text); text-decoration: none;
+      transition: all 0.2s; background: var(--surface);
+    }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    .contact-link svg { width: 16px; height: 16px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 2rem;
+      font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(124,255,164,0.4); }
+      50% { opacity: 0.8; box-shadow: 0 0 0 5px rgba(124,255,164,0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; text-align: center; }
+      .hero-right { order: -1; }
+      .avatar-wrap { width: 200px; height: 200px; }
+      .avatar-img { width: 200px; height: 200px; font-size: 3rem; }
+      .hero-desc { margin: 0 auto 2rem; }
+      .hero-ctas { justify-content: center; }
+      section { padding: 4rem 1.5rem; }
+      .edu-grid { grid-template-columns: 1fr; }
+      .stats-bar { flex-wrap: wrap; }
+      .stat { min-width: 50%; border-bottom: 1px solid var(--border); }
+      .badge { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">SP // Portfolio</div>
+    <div class="nav-links">
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#certifications">Certs</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" style="max-width:100%; padding-left:6rem; padding-right:6rem;">
+    <div class="hero-left">
+      <div class="hero-tag">Available for opportunities</div>
+      <h1>Shubham<br /><span>Pore</span></h1>
+      <p class="hero-role">Linux & Cloud Infrastructure Engineer · Pune, India</p>
+      <p class="hero-desc">
+        RHCSA-certified infrastructure specialist with 3+ years driving enterprise-scale operations across AWS, Azure, and VMware — sustaining 99.9% uptime for global data centers.
+      </p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn btn-primary">Get In Touch</a>
+        <a href="#experience" class="btn btn-outline">View Experience</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="avatar-wrap">
+        <div class="avatar-ring"></div>
+        <div class="avatar-ring-2"></div>
+        <div class="avatar-img">
+          <!-- Replace the line below with: <img src="YOUR_PHOTO_URL" alt="Shubham Pore" /> -->
+          SP
+        </div>
+        <div class="badge">
+          <div class="badge-dot"></div>
+          Open to work
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-number">3+</div><div class="stat-label">Years Experience</div></div>
+    <div class="stat"><div class="stat-number">99.9%</div><div class="stat-label">Server Uptime</div></div>
+    <div class="stat"><div class="stat-number">25%</div><div class="stat-label">Incident Reduction</div></div>
+    <div class="stat"><div class="stat-number">5K+</div><div class="stat-label">Servers Patched</div></div>
+    <div class="stat"><div class="stat-number">5</div><div class="stat-label">Certifications</div></div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-label">Work History</div>
+    <h2>Professional <em>Experience</em></h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="tl-header">
+          <div>
+            <div class="tl-title">Analyst III – Infrastructure Services</div>
+            <div class="tl-company">DXC Technology · Pune, India</div>
+          </div>
+          <div class="tl-date">May 2023 – Present</div>
+        </div>
+        <ul class="tl-bullets">
+          <li>Installed, configured, and maintained RHEL Linux servers across production and development environments, sustaining 99.9% uptime across global data centers.</li>
+          <li>Deployed and managed cloud resources on AWS; implemented monitoring and alerting pipelines using Amazon CloudWatch to proactively detect and resolve infrastructure anomalies.</li>
+          <li>Administered VMware vSphere and Hyper-V environments including VM provisioning, resource optimization, snapshots, templates, and guest OS management.</li>
+          <li>Reduced system incidents by 25% through performance tuning and resolving CPU, memory, and disk bottlenecks using tools such as top, vmstat, iostat, and sar.</li>
+          <li>Executed OS patching and vulnerability remediation using YUM/DNF; managed storage with LVM, ext4, XFS, and swap partitions.</li>
+          <li>Administered user and access management: users, groups, ACLs, permissions, and Sudo policies in compliance with security standards.</li>
+          <li>Coordinated with hardware vendors for drive/CPU replacements and OS validation; participated in CAB calls for change approvals.</li>
+          <li>Applied ITIL/ITSM best practices for Incident and Change Management, consistently meeting SLA targets through 24×7 rotational on-call support.</li>
+          <li>Authored and executed Change Requests (CRs) for OS patching cycles and hardware part replacement within defined maintenance windows.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" style="background: var(--surface); max-width:100%; padding-left:6rem; padding-right:6rem;">
+    <div style="max-width:1100px; margin:0 auto;">
+      <div class="section-label">Technical Expertise</div>
+      <h2>Core <em>Skills</em></h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-card-header"><div class="skill-icon">🐧</div><div class="skill-card-title">Operating Systems</div></div>
+          <div class="skill-tags">
+            <span class="tag">RHEL</span><span class="tag">CentOS</span><span class="tag">Ubuntu</span><span class="tag">Windows Server</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-header"><div class="skill-icon">☁️</div><div class="skill-card-title">Cloud Platforms</div></div>
+          <div class="skill-tags">
+            <span class="tag">AWS EC2</span><span class="tag">S3</span><span class="tag">CloudWatch</span><span class="tag">IAM</span><span class="tag">VPC</span>
+            <span class="tag">Azure VM</span><span class="tag">Azure AD</span><span class="tag">Azure Storage</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-header"><div class="skill-icon">💻</div><div class="skill-card-title">Virtualization</div></div>
+          <div class="skill-tags">
+            <span class="tag">VMware vSphere</span><span class="tag">Hyper-V</span><span class="tag">VM Provisioning</span><span class="tag">Snapshots</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-header"><div class="skill-icon">⚙️</div><div class="skill-card-title">Linux Administration</div></div>
+          <div class="skill-tags">
+            <span class="tag">LVM</span><span class="tag">XFS/ext4</span><span class="tag">YUM/DNF</span><span class="tag">systemd</span><span class="tag">cron</span><span class="tag">Bash Scripting</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-header"><div class="skill-icon">📊</div><div class="skill-card-title">Monitoring & Automation</div></div>
+          <div class="skill-tags">
+            <span class="tag">Nagios</span><span class="tag">CloudWatch</span><span class="tag">top</span><span class="tag">vmstat</span><span class="tag">iostat</span><span class="tag">sar</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-header"><div class="skill-icon">🔒</div><div class="skill-card-title">Security & Access</div></div>
+          <div class="skill-tags">
+            <span class="tag">ACLs</span><span class="tag">Sudo</span><span class="tag">SSH Hardening</span><span class="tag">Vuln Remediation</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-header"><div class="skill-icon">📋</div><div class="skill-card-title">ITSM & Process</div></div>
+          <div class="skill-tags">
+            <span class="tag">ITIL v4</span><span class="tag">Incident Mgmt</span><span class="tag">Change Mgmt</span><span class="tag">CAB</span><span class="tag">SLA Adherence</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-header"><div class="skill-icon">🌐</div><div class="skill-card-title">Networking & Tools</div></div>
+          <div class="skill-tags">
+            <span class="tag">TCP/IP</span><span class="tag">DNS</span><span class="tag">DHCP</span><span class="tag">firewalld</span><span class="tag">ServiceNow</span><span class="tag">BMC Remedy</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications">
+    <div class="section-label">Credentials</div>
+    <h2>Certifi<em>cations</em></h2>
+    <div class="certs-grid">
+      <div class="cert-card">
+        <div class="cert-logo">🎓</div>
+        <div class="cert-name">Red Hat Certified System Administrator (RHCSA)</div>
+        <div class="cert-issuer">Red Hat</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-logo">☁️</div>
+        <div class="cert-name">AWS Certified Cloud Practitioner</div>
+        <div class="cert-issuer">Amazon Web Services</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-logo">🤖</div>
+        <div class="cert-name">AWS Certified AI Practitioner (Beta)</div>
+        <div class="cert-issuer">Amazon Web Services</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-logo">🔵</div>
+        <div class="cert-name">Microsoft Certified: Azure Fundamentals AZ-900</div>
+        <div class="cert-issuer">Microsoft</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-logo">🔶</div>
+        <div class="cert-name">OCI 2022 Certified Foundations Associate</div>
+        <div class="cert-issuer">Oracle</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENTS -->
+  <section id="achievements" style="background: var(--surface); max-width:100%; padding-left:6rem; padding-right:6rem;">
+    <div style="max-width:1100px; margin:0 auto;">
+      <div class="section-label">Highlights</div>
+      <h2>Key <em>Achievements</em></h2>
+      <div class="achieve-grid">
+        <div class="achieve-card">
+          <p>🏆 <strong style="color:#fff">DXC Champs Award</strong> — Achieved 100% completion for FY24 patching cycle across 5,000+ servers coordinating with 35 application teams.</p>
+        </div>
+        <div class="achieve-card">
+          <p>📈 Maintained <strong style="color:#fff">99.9% server uptime</strong> across globally distributed Linux infrastructure supporting critical enterprise workloads.</p>
+        </div>
+        <div class="achieve-card">
+          <p>📉 Achieved a <strong style="color:#fff">25% reduction in system incidents</strong> through proactive monitoring, performance optimization, and process improvement.</p>
+        </div>
+        <div class="achieve-card">
+          <p>🎯 Earned <strong style="color:#fff">5 industry certifications</strong> across AWS, Azure, Oracle Cloud, and Red Hat, demonstrating multi-cloud and infrastructure breadth.</p>
+        </div>
+        <div class="achieve-card">
+          <p>🕐 Successfully delivered <strong style="color:#fff">24×7 on-call support</strong> with consistent SLA adherence for global data center operations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="section-label">Academic Background</div>
+    <h2><em>Education</em></h2>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-degree">Master of Computer Applications (MCA)</div>
+        <div class="edu-school">Institute of Management and Entrepreneurship Development (BVDU)</div>
+        <div class="edu-year">📍 Pune, India · 2022 – 2024</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-degree">Bachelor of Science in Computer Science</div>
+        <div class="edu-school">Yashwantrao Chavan Institute of Science, Satara</div>
+        <div class="edu-year">📍 Satara, India · 2019 – 2022</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" style="background: var(--surface); max-width:100%; padding-left:6rem; padding-right:6rem;">
+    <div style="max-width:1100px; margin:0 auto; text-align:center;">
+      <div class="section-label" style="justify-content:center;">Get In Touch</div>
+      <h2>Let's <em>Connect</em></h2>
+      <p style="color:var(--muted); max-width:520px; margin:0 auto 1rem; font-size:1rem; line-height:1.8;">
+        Open to new opportunities in Linux infrastructure, cloud operations, and DevOps roles. Drop a message or connect on LinkedIn.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:shubhampore1009@gmail.com" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          shubhampore1009@gmail.com
+        </a>
+        <a href="https://linkedin.com/in/shubhampore" target="_blank" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          linkedin.com/in/shubhampore
+        </a>
+        <a href="tel:+917387104476" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 11.91 19.79 19.79 0 0 1 1.61 3.27 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.72a16 16 0 0 0 7.37 7.37l.89-.89a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +91 7387104476
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Shubham Pore · Built with HTML/CSS · Hosted on GitHub Pages</p>
+  </footer>
+
+</body>
+</html>
